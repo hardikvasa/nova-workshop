@@ -34,7 +34,7 @@ else
     mkdir ~/environment/activemq-perftest/reports
 fi
 echo "Getting broker urls..."
-brokerId=`aws mq list-brokers | jq '.BrokerSummaries[] | select(.BrokerName=="Broker") | {id:.BrokerId}' | grep "id" | cut -d '"' -f4`
+brokerId=`aws mq list-brokers | jq '.BrokerSummaries[] | select(.BrokerName=="WorkshopBroker") | {id:.BrokerId}' | grep "id" | cut -d '"' -f4`
 url=`aws mq describe-broker --broker-id=$brokerId | jq '.BrokerInstances[].Endpoints[0]' | xargs -n 2 | awk '{ print "failover:("$1","$2")" }'`
 echo "Saving broker urls..."
 
@@ -52,11 +52,11 @@ source ~/.bashrc
 
 if [[ ! -z $perfurl ]]; 
 then
-printf "\nfactory.brokerURL=$perfurl\n" >> ~/environment/amazon-mq-workshop/openwire-producer.properties
-printf "factory.userName=$brokerUser\n" >> ~/environment/amazon-mq-workshop/openwire-producer.properties
-printf "factory.password=$brokerPassword\n" >> ~/environment/amazon-mq-workshop/openwire-producer.properties
-printf "\nfactory.brokerURL=$perfurl\n" >> ~/environment/amazon-mq-workshop/openwire-consumer.properties
-printf "factory.userName=$brokerUser\n" >> ~/environment/amazon-mq-workshop/openwire-consumer.properties
-printf "factory.password=$brokerPassword\n" >> ~/environment/amazon-mq-workshop/openwire-consumer.properties
+printf "\nfactory.brokerURL=$perfurl\n" >> ~/environment/workshop/mq/openwire-producer.properties
+printf "factory.userName=$brokerUser\n" >> ~/environment/workshop/mq/openwire-producer.properties
+printf "factory.password=$brokerPassword\n" >> ~/environment/workshop/mq/openwire-producer.properties
+printf "\nfactory.brokerURL=$perfurl\n" >> ~/environment/workshop/mq/openwire-consumer.properties
+printf "factory.userName=$brokerUser\n" >> ~/environment/workshop/mq/openwire-consumer.properties
+printf "factory.password=$brokerPassword\n" >> ~/environment/workshop/mq/openwire-consumer.properties
 fi
 echo "Done."
